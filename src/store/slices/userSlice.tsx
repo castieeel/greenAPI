@@ -22,6 +22,3 @@ const userSlice = createSlice({
 
 export const { setUser, removeUser } = userSlice.actions
 export default userSlice.reducer
-
-// export const selectIdInstance = (state) => state.user.idInstance
-// export const selectApiTokenInstance = (state) => state.user.apiTokenInstance

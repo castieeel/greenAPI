@@ -17,12 +17,26 @@ export const Login: React.FunctionComponent = () => {
     idInstance: id,
     apiTokenInstance: token
   }
-  const { data: stateInstance } = useGetAuthQuery(paramQuery)
 
-  const onSubmit = (data: FormValues): void => {
-    id = data.idInstance
-    token = data.apiTokenInstance
-    console.log(stateInstance)
+  const onSubmit = (formData: FormValues): void => {
+    id = formData.idInstance
+    token = formData.apiTokenInstance
+    const { data } = useGetAuthQuery(paramQuery)
+
+    if (data?.stateInstance === 'authorized') {
+      console.log(data.stateInstance)
+    }
+
+    // getAuth({
+    //   idInstance: id,
+    //   apiTokenInstance: token
+    // }).then((data: { stateInstance: string }) => {
+    //   if (data.stateInstance === 'authorized') {
+    //     localStorage.setItem('idInstance', id)
+    //     localStorage.setItem('apiTokenInstance', token)
+    //     console.log(data.stateInstance)
+    //   }
+    // })
   }
 
   return (

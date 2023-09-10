@@ -16,8 +16,7 @@ export const greenApi = createApi({
       query: (param) => {
         const { idInstance, apiTokenInstance } = param
         return {
-          url: `waInstance${idInstance}/getStateInstance/${apiTokenInstance}`,
-          headers: { 'Content-Type': 'application/json' }
+          url: `waInstance${idInstance}/getStateInstance/${apiTokenInstance}`
         }
       }
     })
