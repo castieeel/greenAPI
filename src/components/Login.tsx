@@ -1,7 +1,7 @@
 import React from 'react'
 import * as S from '../styled-components/login.style'
 import { useForm } from 'react-hook-form'
-import { useGetAuthQuery } from '../services/api'
+import { useLazyGetAuthQuery } from '../services/api'
 
 interface FormValues {
   idInstance: string
@@ -10,33 +10,14 @@ interface FormValues {
 
 export const Login: React.FunctionComponent = () => {
   const { register, handleSubmit } = useForm<FormValues>()
-  let id: string = ''
-  let token: string = ''
-
-  const paramQuery: FormValues = {
-    idInstance: id,
-    apiTokenInstance: token
-  }
+  const [fetchAuth, { data: result }] = useLazyGetAuthQuery()
 
   const onSubmit = (formData: FormValues): void => {
-    id = formData.idInstance
-    token = formData.apiTokenInstance
-    const { data } = useGetAuthQuery(paramQuery)
-
-    if (data?.stateInstance === 'authorized') {
-      console.log(data.stateInstance)
+    void fetchAuth(formData)
+    if (result?.stateInstance === 'authorized') {
+      localStorage.setItem('idInstance', formData.idInstance)
+      localStorage.setItem('apiTokenInstance', formData.apiTokenInstance)
     }
-
-    // getAuth({
-    //   idInstance: id,
-    //   apiTokenInstance: token
-    // }).then((data: { stateInstance: string }) => {
-    //   if (data.stateInstance === 'authorized') {
-    //     localStorage.setItem('idInstance', id)
-    //     localStorage.setItem('apiTokenInstance', token)
-    //     console.log(data.stateInstance)
-    //   }
-    // })
   }
 
   return (
@@ -46,6 +27,7 @@ export const Login: React.FunctionComponent = () => {
     <S.Input {...register('idInstance', { required: true })} placeholder='idInstance' type='text'/>
     <S.Input {...register('apiTokenInstance', { required: true })}placeholder='apiTokenInstance' type='text'/>
     <S.Button type='submit'>Войти</S.Button>
+    <p>{ result?.stateInstance }</p>
     </S.FormLogin>
   )
 }

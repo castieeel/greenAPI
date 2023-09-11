@@ -23,4 +23,4 @@ export const greenApi = createApi({
   })
 })
 
-export const { useGetAuthQuery } = greenApi
+export const { useLazyGetAuthQuery } = greenApi
