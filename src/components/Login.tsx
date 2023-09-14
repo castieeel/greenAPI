@@ -1,7 +1,7 @@
 import React from 'react'
 import * as S from '../styled-components/login.style'
 import { useForm } from 'react-hook-form'
-import { useLazyGetAuthQuery } from '../services/api'
+import { greenApi } from '../services/api'
 
 interface FormValues {
   idInstance: string
@@ -10,14 +10,15 @@ interface FormValues {
 
 export const Login: React.FunctionComponent = () => {
   const { register, handleSubmit } = useForm<FormValues>()
-  const [fetchAuth, { data: result }] = useLazyGetAuthQuery()
+  const [fetchAuth, { data: result }] = greenApi.endpoints.getAuth.useLazyQuery()
 
   const onSubmit = (formData: FormValues): void => {
-    void fetchAuth(formData)
-    if (result?.stateInstance === 'authorized') {
-      localStorage.setItem('idInstance', formData.idInstance)
-      localStorage.setItem('apiTokenInstance', formData.apiTokenInstance)
-    }
+    void fetchAuth(formData).unwrap().then((result) => {
+      if (result?.stateInstance === 'authorized') {
+        localStorage.setItem('idInstance', formData.idInstance)
+        localStorage.setItem('apiTokenInstance', formData.apiTokenInstance)
+      }
+    })
   }
 
   return (
