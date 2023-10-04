@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { type iAuth } from '../models/models'
+import { type iMes, type iAuth, type iIncoming } from '../models/models'
 
 export const greenApi = createApi({
   reducerPath: 'api',
@@ -19,8 +19,40 @@ export const greenApi = createApi({
           url: `waInstance${idInstance}/getStateInstance/${apiTokenInstance}`
         }
       }
+    }),
+    sendMessage: builder.mutation< iMes, { idInstance: string, apiTokenInstance: string, bodyMes: iMes } >({
+      query: (param) => {
+        const { idInstance, apiTokenInstance, bodyMes } = param
+        return {
+          url: `waInstance${idInstance}/sendMessage/${apiTokenInstance}`,
+          method: 'POST',
+          body: bodyMes
+        }
+      }
+    }),
+    getMessage: builder.query < iIncoming, { idInstance: string, apiTokenInstance: string } >({
+      query: (param) => {
+        const { idInstance, apiTokenInstance } = param
+        return {
+          url: `waInstance${idInstance}/receiveNotification/${apiTokenInstance}`
+        }
+      }
+    }),
+    deleteNotification: builder.mutation< { id: number }, { idInstance: string, apiTokenInstance: string, receiptId: number } >({
+      query: (param) => {
+        const { idInstance, apiTokenInstance, receiptId } = param
+        return {
+          url: `waInstance${idInstance}/deleteNotification/${apiTokenInstance}/${receiptId}`,
+          method: 'DELETE'
+        }
+      }
     })
   })
 })
 
-export const { useLazyGetAuthQuery } = greenApi
+export const {
+  useLazyGetAuthQuery,
+  useSendMessageMutation,
+  useGetMessageQuery,
+  useDeleteNotificationMutation
+} = greenApi

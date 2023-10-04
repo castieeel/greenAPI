@@ -2,21 +2,24 @@ import React from 'react'
 import * as S from '../styled-components/login.style'
 import { useForm } from 'react-hook-form'
 import { greenApi } from '../services/api'
-
-interface FormValues {
-  idInstance: string
-  apiTokenInstance: string
-}
+import { useNavigate } from 'react-router'
+import { useDispatch } from 'react-redux'
+import { setLogin } from '../store/slices/sliceUser'
+import { type AuthValues } from '../models/models'
 
 export const Login: React.FunctionComponent = () => {
-  const { register, handleSubmit } = useForm<FormValues>()
+  const { register, handleSubmit } = useForm<AuthValues>()
   const [fetchAuth, { data: result }] = greenApi.endpoints.getAuth.useLazyQuery()
+  const navigate: ReturnType<typeof useNavigate> = useNavigate()
+  const dispatch = useDispatch()
 
-  const onSubmit = (formData: FormValues): void => {
+  const onSubmit = (formData: AuthValues): void => {
     void fetchAuth(formData).unwrap().then((result) => {
       if (result?.stateInstance === 'authorized') {
         localStorage.setItem('idInstance', formData.idInstance)
         localStorage.setItem('apiTokenInstance', formData.apiTokenInstance)
+        dispatch(setLogin(true))
+        navigate('/')
       }
     })
   }
