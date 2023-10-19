@@ -45,6 +45,7 @@ export const Left = styled.div`
     flex-direction: column;
     align-items: flex-start;
     padding-left: 5px;
+    padding-bottom: 5px;
 `
 
 export const Right = styled.div`
@@ -53,6 +54,7 @@ export const Right = styled.div`
     flex-direction: column;
     align-items: flex-end;
     padding-right: 5px;
+    padding-bottom: 5px;
 `
 
 export const UserImg = styled.img`

@@ -19,4 +19,6 @@ padding-left: 10px;
 `
 export const Button = styled.button`
 font-size: 26px;
+padding: 5px;
+cursor: pointer;
 `
