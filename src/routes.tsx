@@ -7,12 +7,12 @@ import { ProtectedRoute } from './components/ProtectedRoute'
 
 export const AppRoutes: React.FunctionComponent = () => {
   return (
-    <Routes>
+<Routes>
       <Route path="login" element={<LoginPage />} />
       <Route path="*" element={<NotFound />} />
 
       <Route element={<ProtectedRoute />}>
-        <Route path="/" element={<MainPage />} />
+      <Route path="/" element={<MainPage />} />
       </Route>
 </Routes>
   )
